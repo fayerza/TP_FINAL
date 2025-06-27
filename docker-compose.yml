@@ -13,3 +13,16 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=monsterHunter_DB
       - PGDATA=/var/lib/postgresql/data/
+  
+  node_express:
+    restart: always
+    container_name: express_MH
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - postgres
