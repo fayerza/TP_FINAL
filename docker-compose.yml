@@ -1,29 +1,49 @@
 services:
-
   postgres:
-    restart: always
-    image: postgres:14-alpine
     container_name: postgres_MH
+    image: postgres:14-alpine
+    restart: always
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - ./backend/app/database/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./.volumes/postgres/data:/var/lib/postgresql/data/
+      - ./backend/.volumes/postgres/data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=monsterHunter_DB
       - PGDATA=/var/lib/postgresql/data/
-  
-  node_express:
-    restart: always
-    container_name: express_MH
+
+  backend:
+    container_name: backend_MH
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
+    restart: always
     ports:
-      - 3000:3000
+      - "5000:5000"
     volumes:
       - ./backend:/app
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=monsterHunter_DB
     depends_on:
       - postgres
+
+  frontend:
+    container_name: frontend_MH
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    environment:
+      - BACKEND_URL=http://backend:5000
+    depends_on:
+      - backend
