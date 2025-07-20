@@ -23,7 +23,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./backend:/app
+      - ./backend:/backend
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
