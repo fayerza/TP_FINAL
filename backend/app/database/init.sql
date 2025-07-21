@@ -75,13 +75,13 @@ CREATE TABLE Monsters (
     Drg_res INT NOT NULL,
     Elc_res INT NOT NULL,
     Type type_monster NOT NULL,
-    Reward INT NOT NULL,
     Og_game VARCHAR(55),
     Difficulty FLOAT NOT NULL
 );
 
 CREATE TABLE Regions (
     Region_id SERIAL PRIMARY KEY,
+    Name VARCHAR(55),
     Img VARCHAR(255),
     Weather type_weather NOT NULL,
     Description VARCHAR(1000) NOT NULL,
@@ -109,7 +109,6 @@ CREATE TABLE Weapons(
     Weapon_id SERIAL PRIMARY KEY,
     Type type_weapon NOT NULL,
     Img VARCHAR(255),
-    Price INT NOT NULL,
     Element type_element NOT NULL,
     Affinity FLOAT NOT NULL,
     Dmg FLOAT NOT NULL,

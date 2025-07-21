@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { getMonsters } = require("../controllers/monsters.js");
+const { getMonsters,getOneMonster } = require("../controllers/monsters.js");
 
 router.get("/", getMonsters);
+router.get("/:id",getOneMonster);
 
 module.exports = router;
