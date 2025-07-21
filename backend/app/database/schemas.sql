@@ -45,18 +45,23 @@ INSERT INTO Regions (Name, Img, Weather, Description, Num_Areas, Og_game) VALUES
 
 ('Tower', 'https://example.com/regions/tower.png', 'Mild', 'A mysterious ancient structure with multiple levels.', 4, 'Monster Hunter Freedom Unite');
 
-INSERT INTO Monsters_Regions(Region_id, Monster_id) VALUES (1, 1);
-INSERT INTO Monsters_Regions(Region_id, Monster_id) VALUES (5, 1);
-INSERT INTO Monsters_Regions(Region_id, Monster_id) VALUES (8, 1);
+INSERT INTO Monsters_Regions(Region_id, Monster_id) VALUES (1, 5);
+INSERT INTO Monsters_Regions(Region_id, Monster_id) VALUES (5, 5);
+INSERT INTO Monsters_Regions(Region_id, Monster_id) VALUES (8, 5);
 
 INSERT INTO Monster_Atks (Atk_element, Dmg, Name, Monster_id) VALUES
-('Electric', 90, 'Thunder Slam', 1),
-('Electric', 75, 'Spark Charge', 1),
-('Electric', 65, 'Lightning Dash', 1),
-('Electric', 100, 'Supercharged Roar', 1),
-('None', 55, 'Claw Swipe', 1);
+('Electric', 90, 'Thunder Slam', 2),
+('Electric', 75, 'Spark Charge', 2),
+('Electric', 65, 'Lightning Dash', 2),
+('Electric', 100, 'Supercharged Roar', 2),
+('None', 55, 'Claw Swipe', 2);
 
-select * from monsters m left outer join monsters_regions mr on m.monster_id =mr.monster_id  
-left outer join regions r  on mr.region_id =r.region_id 
-left outer join monster_atks ma on ma.monster_id = m.monster_id
-where m.monster_id = 2;
+SELECT
+m.monster_id,m.name ,m.img, m.description, m.wtr_res , m.fr_res, m.ice_res , m.drg_res ,m.elc_res ,m.type , m.og_game ,m.difficulty ,
+r.region_id AS "region_id", r.name AS "region_name", r.img AS "region_img", 
+ma.Atk_id , ma.name AS "attack_name" , ma.dmg , ma.atk_element 
+FROM monsters m 
+LEFT OUTER JOIN monsters_regions mr ON m.monster_id = mr.monster_id 
+LEFT OUTER JOIN regions r  ON mr.region_id = r.region_id 
+LEFT OUTER JOIN monster_atks ma ON ma.monster_id = m.monster_id 
+WHERE m.monster_id = $1;

@@ -93,8 +93,8 @@ CREATE TABLE Monsters_Regions (
     Region_id INT,
     Monster_id INT,
     PRIMARY KEY(Region_id, Monster_id),
-    FOREIGN KEY (Region_id) REFERENCES Regions(Region_id),
-    FOREIGN KEY (Monster_id) REFERENCES Monsters(Monster_id)
+    FOREIGN KEY (Region_id) REFERENCES Regions(Region_id) ON DELETE CASCADE,
+    FOREIGN KEY (Monster_id) REFERENCES Monsters(Monster_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Monster_Atks(
@@ -102,7 +102,7 @@ CREATE TABLE Monster_Atks(
     Atk_element type_element NOT NULL,
     Dmg INT NOT NULL,
     Name VARCHAR(55) NOT NULL,
-    Monster_id INT REFERENCES Monsters(Monster_id)
+    Monster_id INT REFERENCES Monsters(Monster_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Weapons(
