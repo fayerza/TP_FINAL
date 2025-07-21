@@ -4,6 +4,7 @@ const port = 5000;
 
 const monstersRoutes= require('./app/routes/monsters_route.js');
 
+app.use(express.json());
 app.use("/api/v1/monsters",monstersRoutes);
 
 app.get('/', (req, res) => {

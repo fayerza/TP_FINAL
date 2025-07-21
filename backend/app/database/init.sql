@@ -75,13 +75,13 @@ CREATE TABLE Monsters (
     Drg_res INT NOT NULL,
     Elc_res INT NOT NULL,
     Type type_monster NOT NULL,
-    Reward INT NOT NULL,
     Og_game VARCHAR(55),
     Difficulty FLOAT NOT NULL
 );
 
 CREATE TABLE Regions (
     Region_id SERIAL PRIMARY KEY,
+    Name VARCHAR(55),
     Img VARCHAR(255),
     Weather type_weather NOT NULL,
     Description VARCHAR(1000) NOT NULL,
@@ -93,8 +93,8 @@ CREATE TABLE Monsters_Regions (
     Region_id INT,
     Monster_id INT,
     PRIMARY KEY(Region_id, Monster_id),
-    FOREIGN KEY (Region_id) REFERENCES Regions(Region_id),
-    FOREIGN KEY (Monster_id) REFERENCES Monsters(Monster_id)
+    FOREIGN KEY (Region_id) REFERENCES Regions(Region_id) ON DELETE CASCADE,
+    FOREIGN KEY (Monster_id) REFERENCES Monsters(Monster_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Monster_Atks(
@@ -102,14 +102,13 @@ CREATE TABLE Monster_Atks(
     Atk_element type_element NOT NULL,
     Dmg INT NOT NULL,
     Name VARCHAR(55) NOT NULL,
-    Monster_id INT REFERENCES Monsters(Monster_id)
+    Monster_id INT REFERENCES Monsters(Monster_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Weapons(
     Weapon_id SERIAL PRIMARY KEY,
     Type type_weapon NOT NULL,
     Img VARCHAR(255),
-    Price INT NOT NULL,
     Element type_element NOT NULL,
     Affinity FLOAT NOT NULL,
     Dmg FLOAT NOT NULL,
