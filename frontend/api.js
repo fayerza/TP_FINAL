@@ -1,10 +1,16 @@
-const BACKEND_URL = process.env.BACKEND_URL
+const BACKEND_URL = 'http://localhost:5000/api/v1';
 
 export async function getMonsters() {
-  const res = await fetch(`${BACKEND_URL}/monsters`)
-  if (!res.ok) {
-    throw new Error('Failed to fetch monsters');
+  try {
+    const res = await fetch(`${BACKEND_URL}/monsters`);
+    if (!res.ok) {
+      throw new Error('Failed to fetch monsters');
+    }
+    const data = await res.json();
+    console.log('data')
+    return data;
+  } catch (error) {
+    console.error('Error fetching monsters:', error);
+    throw error;
   }
-  const data = await res.json();
-  return data;
 }
