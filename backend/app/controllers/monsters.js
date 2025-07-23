@@ -2,7 +2,7 @@ const db = require('../database/connection.js');
 
 async function getMonsters(req, res) {
     try {
-        const monsters = await db.query('SELECT Monster_id, Name, Img, Type, Description FROM monsters');
+        const monsters = await db.query('SELECT Monster_id, Name, Type, Og_game, Difficulty FROM monsters');
         return res.status(200).json(monsters.rows);
     } catch (error) {
         console.error('Error: ', error);

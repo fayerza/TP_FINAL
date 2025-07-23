@@ -1,15 +1,18 @@
 const express = require('express');
-const app = express();
-const port = 5000;
+const cors = require('cors');
 
-const monstersRoutes= require('./app/routes/monsters_route.js');
+const app = express();
 
 app.use(express.json());
-app.use("/api/v1/monsters",monstersRoutes);
+app.use(cors());
+
+const port = 5000;
+const monstersRoutes= require('./app/routes/monsters_route.js');
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 })
+app.use("/api/v1/monsters", monstersRoutes);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
