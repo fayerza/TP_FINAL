@@ -25,7 +25,7 @@
     <div class="flex flex-col w-max bg-gray-600 p-6 rounded">
       <div class="flex justify-between items-center mb-4 w-full">
         <h2 class="text-2xl font-bold font-cinzel text-gray-300">Monstruos</h2>
-        <a href="edit-monster.html"
+        <a href="./create.html"
           class="bg-green-700 hover:bg-green-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow">
           Crear Nuevo
         </a>
@@ -56,9 +56,8 @@
 
     <script type="module">
       import { getMonsters } from '../api.js';
+      
       getMonsters().then(res => {
-        console.log("RES", res)
-
         res.forEach(element => {
           const row = document.createElement("tr");
 
@@ -91,7 +90,7 @@
           const link = document.createElement("a");
           link.classList.add("px-4", "py-2", "text-left", "w-max", "text-blue-400", "hover:underline");
           link.innerText = "Ver ->";
-          link.href = `viewMonster.html?id=${element.monster_id}`;
+          link.href = `/monsters/viewMonster.html?id=${element.monster_id}`;
           detail.appendChild(link);
           row.appendChild(detail);
 

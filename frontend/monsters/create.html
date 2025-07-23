@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crear Monstruo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+
+    .font-lora {
+      font-family: 'Lora', serif;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen px-[7%] flex items-center bg-gray-800 text-gray-200 font-lora bg-cover bg-center"
+  style="background-image: url('../assets/background.jpg');">
+  <div
+    class="text-center px-10 w-full h-screen flex flex-col justify-center items-center bg-gray-950/50 overflow-y-auto py-10">
+    <form id="monsterForm" class="flex flex-col gap-4 w-full max-w-2xl bg-gray-600 p-6 rounded shadow-md text-left">
+      <h2 class="text-2xl font-bold font-cinzel text-gray-100 mb-2">Crear Nuevo Monstruo</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="name" class="block font-cinzel">Nombre</label>
+          <input type="text" id="name" name="name" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+
+        <div>
+          <label for="img" class="block font-cinzel">Imagen (URL)</label>
+          <input type="text" id="img" name="img" class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+
+        <div>
+          <label for="type" class="block font-cinzel">Tipo</label>
+          <select id="type" name="type" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1">
+            <option value="" disabled selected>Seleccione...</option>
+            <option value="Amphibian">Amphibian</option>
+            <option value="Bird Wyvern">Bird Wyvern</option>
+            <option value="Brute Wyver">Brute Wyver</option>
+            <option value="Carapaceon">Carapaceon</option>
+            <option value="Cephalopod">Cephalopod</option>
+            <option value="Construct">Construct</option>
+            <option value="Demi Elder">Demi Elder</option>
+            <option value="Elder Dragon">Elder Dragon</option>
+            <option value="Fanged Beast">Fanged Beast</option>
+            <option value="Fanged Wyvern">Fanged Wyvern</option>
+            <option value="Flying Wyvern">Flying Wyvern</option>
+            <option value="Leviathan">Leviathan</option>
+            <option value="Neopteron">Neopteron</option>
+            <option value="Piscine Wyvern">Piscine Wyvern</option>
+            <option value="Snake Wyvern">Snake Wyvern</option>
+            <option value="Temnoceran">Temnoceran</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="game" class="block font-cinzel">Juego Original</label>
+          <input type="text" id="game" name="game" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+
+        <div>
+          <label for="difficulty" class="block font-cinzel">Dificultad</label>
+          <input type="number" id="difficulty" name="difficulty" step="0.1" required
+            class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+
+        <div class="md:col-span-2">
+          <label for="desc" class="block font-cinzel">Descripción</label>
+          <textarea id="desc" name="desc" rows="3" required
+            class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1"></textarea>
+        </div>
+      </div>
+
+      <h3 class="text-lg mt-6 font-cinzel text-gray-100">Resistencias</h3>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="wtr_res" class="block font-cinzel">Resistencia Agua</label>
+          <input type="number" id="wtr_res" name="wtr_res" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+        <div>
+          <label for="fr_res" class="block font-cinzel">Resistencia Fuego</label>
+          <input type="number" id="fr_res" name="fr_res" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+        <div>
+          <label for="ice_res" class="block font-cinzel">Resistencia Hielo</label>
+          <input type="number" id="ice_res" name="ice_res" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+        <div>
+          <label for="drg_res" class="block font-cinzel">Resistencia Dragón</label>
+          <input type="number" id="drg_res" name="drg_res" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+        <div>
+          <label for="elc_res" class="block font-cinzel">Resistencia Eléctrica</label>
+          <input type="number" id="elc_res" name="elc_res" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-6">
+        <a href="./index.html" class="text-gray-300 hover:text-white underline font-cinzel">&lt; Volver</a>
+        <button type="submit"
+          class="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded font-semibold font-cinzel shadow">
+          Guardar
+        </button>
+      </div>
+    </form>
+
+    <script type="module">
+      import { createMonster } from '../api.js';
+
+      document.getElementById('monsterForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const monster = {
+          name: document.getElementById('name').value,
+          img: document.getElementById('img').value,
+          desc: document.getElementById('desc').value,
+          type: document.getElementById('type').value,
+          game: document.getElementById('game').value,
+          difficulty: parseFloat(document.getElementById('difficulty').value),
+          wtr_res: Number(document.getElementById('wtr_res').value || 0),
+          fr_res: Number(document.getElementById('fr_res').value || 0),
+          ice_res: Number(document.getElementById('ice_res').value || 0),
+          drg_res: Number(document.getElementById('drg_res').value || 0),
+          elc_res: Number(document.getElementById('elc_res').value || 0),
+        };
+
+        try {
+          await createMonster(JSON.stringify(monster));
+          window.location.href = './index.html';
+          alert('Monstruo creado exitosamente.');
+        } catch (error) {
+          alert('Hubo un error al crear el monstruo. Ver consola.');
+          console.error(error);
+        }
+      });
+    </script>
+  </div>
+</body>
+
+</html>
