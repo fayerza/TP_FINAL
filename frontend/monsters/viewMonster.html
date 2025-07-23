@@ -26,7 +26,13 @@
         class="min-h-screen h-full grid grid-cols-4 gap-4 px-10 w-full flex-col justify-center items-stretch bg-black/85 pb-10">
 
         <div class="col-span-4 pt-4">
-            <h1 class="text-5xl underline" id="monster_name"></h1>
+            <div class="flex w-full justify-between">
+                <h1 class="text-5xl font-bold font-cinzel text-gray-100 mb-2 underline" id="monster_name"></h1>
+                <a id="editMonsterButton" href="#"
+                    class="bg-blue-700 hover:bg-blue-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow flex h-max">
+                    Editar
+                </a>
+            </div>
         </div>
 
         <div class="col-span-4 md:col-span-2 h-full flex flex-col justify-between p-4 ">
@@ -104,8 +110,12 @@
         const id = params.get("id");
         console.log(id);
         getOneMonster(id).then(result => {
+            const editButton = document.getElementById("editMonsterButton");
+            editButton.href = `./edit.html?id=${id}`;
+
             const title = document.getElementById("monster_name");
             title.innerHTML = result.id + ". " + result.name;
+
             document.getElementById("monster_img").src = result.img;
             document.getElementById("monster_desc").innerHTML = result.description;
             document.getElementById("monster_type").innerHTML = `Category: ${result.type}`;

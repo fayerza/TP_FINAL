@@ -146,7 +146,7 @@ async function updateMonster(req, res) {
         if (result.rowCount === 0) {
             return res.status(404).send("Monster not found");
         }
-        return res.status(200).send("Monster Updated");
+        return res.status(200).json({ message: "Monster Updated" });
     } catch (error) {
         console.error('Error: ', error);
         return res.sendStatus(500);
