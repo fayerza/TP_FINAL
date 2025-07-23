@@ -1,11 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monsters</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monstruos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+
+    .font-lora {
+      font-family: 'Lora', serif;
+    }
+  </style>
 </head>
-<body>
-  
+
+<body class="min-h-screen px-[7%] flex items-center bg-gray-800 text-gray-200 font-lora bg-cover bg-center"
+  style="background-image: url('../assets/background.jpg');">
+  <div class="text-center px-10 w-full h-screen flex flex-col justify-center items-center bg-gray-950/50">
+    <div class="flex flex-col w-max bg-gray-600 p-6 rounded">
+      <div class="flex justify-between items-center mb-4 w-full">
+        <h2 class="text-2xl font-bold font-cinzel text-gray-300">Monstruos</h2>
+        <a href="edit-monster.html"
+          class="bg-green-700 hover:bg-green-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow">
+          Crear Nuevo
+        </a>
+      </div>
+
+      <div class="rounded">
+        <table class="min-w-full ">
+          <thead class="bg-gray-00">
+            <tr>
+              <th class="px-4 py-2 text-left font-semibold text-gray-100">ID</th>
+              <th class="px-4 py-2 text-left font-semibold text-gray-100">Nombre</th>
+              <th class="px-4 py-2 text-left font-semibold text-gray-100">Tipo</th>
+              <th class="px-4 py-2 text-left font-semibold text-gray-100">Juego Original</th>
+              <th class="px-4 py-2 text-left font-semibold text-gray-100">Dificultad</th>
+              <th class="px-4 py-2 text-left font-semibold text-gray-100">Detalle</th>
+            </tr>
+          </thead>
+          <tbody id="monsters-table" class="">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex mt-6 w-full justify-start">
+        <a href="../index.html" class="text-gray-400 hover:text-gray-200 hover:underline">
+          < Volver al inicio</a>
+      </div>
+    </div>
+
+    <script type="module">
+      import { getMonsters } from '../api.js';
+      getMonsters().then(res => {
+        console.log("RES", res)
+
+        res.forEach(element => {
+          const row = document.createElement("tr");
+
+          const id = document.createElement("td");
+          id.classList.add("px-4", "py-2", "text-left", "w-max");
+          id.innerHTML = element.monster_id;
+          row.appendChild(id);
+
+          const name = document.createElement("td");
+          name.classList.add("px-4", "py-2", "text-left", "w-max");
+          name.innerHTML = element.name;
+          row.appendChild(name);
+
+          const type = document.createElement("td");
+          type.classList.add("px-4", "py-2", "text-left", "w-max");
+          type.innerHTML = element.type;
+          row.appendChild(type);
+
+          const og_game = document.createElement("td");
+          og_game.classList.add("px-4", "py-2", "text-left", "w-max");
+          og_game.innerHTML = element.og_game;
+          row.appendChild(og_game);
+
+          const difficulty = document.createElement("td");
+          difficulty.classList.add("px-4", "py-2", "text-left", "w-max");
+          difficulty.innerHTML = element.difficulty;
+          row.appendChild(difficulty);
+
+          const detail = document.createElement("td");
+          const link = document.createElement("a");
+          link.classList.add("px-4", "py-2", "text-left", "w-max", "text-blue-400", "hover:underline");
+          link.innerText = "Ver ->";
+          link.href = "#";
+          detail.appendChild(link);
+          row.appendChild(detail);
+
+          const table = document.getElementById("monsters-table");
+          table.classList.add("px-4", "py-2", "text-left", "w-max");
+
+          table.appendChild(row);
+        });
+      })
+    </script>
+  </div>
 </body>
+
 </html>
