@@ -111,6 +111,20 @@ export async function getOneMonsterAttack(id, attackId) {
   }
 }
 
+export async function getOneRegion(id) {
+  try {
+    const res = await fetch(`${BACKEND_URL}/regions/${id}`);
+    if (!res.ok) {
+      throw new Error('Failed to get a Region');
+    }
+    const data = await res.json();
+    console.log('data');
+    return data;
+  } catch (error) {
+    console.error('Error fetching region:', error);
+    throw error;
+  }
+}
 
 export async function createMonsterAttack(id, attack) {
   try {
@@ -136,6 +150,7 @@ export async function createMonsterAttack(id, attack) {
     throw error;
   }
 }
+
 export async function updateMonsterAttack(id, attackId, attack) {
   try {
     if (!id || !attackId || !attack) {
@@ -174,6 +189,42 @@ export async function deleteMonsterAttack(id, attackId) {
     return res.status === 204;
   } catch (error) {
     console.error('Error deleting monster attack:', error);
+    throw error;
+  }
+}
+
+export async function deleteRelationship(idRegion, idMonster) {
+  try {
+    if (!idRegion || !idMonster) {
+      throw new Error('The monster or Region id is needed');
+    }
+    const res = await fetch(`${BACKEND_URL}/monsters_regions/${idRegion}/${idMonster}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) {
+      throw new Error('Failed to delete relationship');
+    }
+    return res.status === 204;
+  } catch (error) {
+    console.error('Error deleting relationship:', error);
+    throw error;
+  }
+}
+
+export async function createRelationship(idRegion, idMonster) {
+  try {
+    if (!idRegion || !idMonster) {
+      throw new Error('The monster or Region id is needed');
+    }
+    const res = await fetch(`${BACKEND_URL}/monsters_regions/${idRegion}/${idMonster}`, {
+      method: 'POST',
+    });
+    if (!res.ok) {
+      throw new Error('Failed to create relationship');
+    }
+    return res.status === 201;
+  } catch (error) {
+    console.error('Error creating relationship:', error);
     throw error;
   }
 }
