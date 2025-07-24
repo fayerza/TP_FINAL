@@ -2,7 +2,7 @@ const db = require('../database/connection.js');
 
 async function getRegions(req, res) {
     try {
-        const regions = await db.query('SELECT Region_id, Name, Img, Description FROM Regions');
+        const regions = await db.query('SELECT Region_id, Name, Weather FROM Regions');
         return res.status(200).json(regions.rows);
     } catch (error) {
         console.error('Error: ', error);
@@ -106,7 +106,7 @@ async function updateRegion(req, res) {
         if (result.rowCount === 0) {
             return res.status(404).send("Region not found");
         }
-        return res.status(200).send("Region Updated");
+        return res.status(200).json({ message: "Region Updated" });
 
     } catch (error) {
         console.error('Error: ', error);
