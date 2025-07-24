@@ -49,12 +49,12 @@ INSERT INTO Monsters_Regions(Region_id, Monster_id) VALUES (1, 5);
 INSERT INTO Monsters_Regions(Region_id, Monster_id) VALUES (5, 5);
 INSERT INTO Monsters_Regions(Region_id, Monster_id) VALUES (8, 5);
 
-INSERT INTO Monster_Atks (Atk_element, Dmg, Name, Monster_id) VALUES
-('Electric', 90, 'Thunder Slam', 2),
-('Electric', 75, 'Spark Charge', 2),
-('Electric', 65, 'Lightning Dash', 2),
-('Electric', 100, 'Supercharged Roar', 2),
-('None', 55, 'Claw Swipe', 2);
+INSERT INTO Monster_Atks (Atk_element, Dmg, Name, Monster_id, type) VALUES
+('Electric', 90, 'Thunder Slam', 2, 'Impact'),
+('Electric', 75, 'Spark Charge', 2, 'Impact'),
+('Electric', 65, 'Lightning Dash', 2, 'Cutting'),
+('Electric', 100, 'Supercharged Roar', 2, 'Cutting'),
+('None', 55, 'Claw Swipe', 2, 'Impact');
 
 SELECT
 m.monster_id,m.name ,m.img, m.description, m.wtr_res , m.fr_res, m.ice_res , m.drg_res ,m.elc_res ,m.type , m.og_game ,m.difficulty ,

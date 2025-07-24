@@ -5,7 +5,6 @@ DROP TYPE IF EXISTS type_monster;
 DROP TYPE IF EXISTS type_weather;
 DROP TYPE IF EXISTS type_attack;
 DROP TYPE IF EXISTS type_element;
-DROP TYPE IF EXISTS type_weapon;
 
 CREATE TYPE type_monster AS ENUM(
     'Amphibian',
@@ -47,22 +46,10 @@ CREATE TYPE type_element AS ENUM(
     'None'
 );
 
-CREATE TYPE type_weapon AS ENUM(
-    'Great Sword',
-    'Long Sword',
-    'Sword & Shiled',
-    'Dual Blades',
-    'Hammer',
-    'Lance'
-);
-
 DROP TABLE IF EXISTS Monsters;
 DROP TABLE IF EXISTS Regions;
 DROP TABLE IF EXISTS Monsters_Regions;
 DROP TABLE IF EXISTS Monster_Atks;
-DROP TABLE IF EXISTS Weapons;
-DROP TABLE IF EXISTS Weapons_Atks;
-DROP TABLE IF EXISTS Atks;
 
 CREATE TABLE Monsters (
     Monster_id SERIAL PRIMARY KEY,
@@ -102,32 +89,6 @@ CREATE TABLE Monster_Atks(
     Atk_element type_element NOT NULL,
     Dmg INT NOT NULL,
     Name VARCHAR(55) NOT NULL,
-    Monster_id INT REFERENCES Monsters(Monster_id) ON DELETE CASCADE
-);
-
-CREATE TABLE Weapons(
-    Weapon_id SERIAL PRIMARY KEY,
-    Type type_weapon NOT NULL,
-    Img VARCHAR(255),
-    Element type_element NOT NULL,
-    Affinity FLOAT NOT NULL,
-    Dmg FLOAT NOT NULL,
-    Elem_dmg FLOAT NOT NULL,
-    Sharpness FLOAT NOT NULL,
-    Rarity INT NOT NULL
-);
-
-CREATE TABLE Attacks(
-    Attack_id SERIAL PRIMARY KEY,
-    Name VARCHAR(55) NOT NULL,
-    Description VARCHAR(1000) NOT NULL,
+    Monster_id INT REFERENCES Monsters(Monster_id) ON DELETE CASCADE,
     Type type_attack NOT NULL
-);
-
-CREATE TABLE Weapons_Attacks(
-    Attack_id INT,
-    Weapon_id INT,
-    PRIMARY KEY(Weapon_id, Attack_id),
-    FOREIGN KEY (Weapon_id) REFERENCES Weapons(Weapon_id),
-    FOREIGN KEY (Attack_id) REFERENCES Attacks(Attack_id)
 );
