@@ -5,6 +5,8 @@ Instalar Docker
 
 Asegurarse de tener los puertos *3000* y *5000* de la maquina disponibles antes de levantar el proyecto
 
+Usar el comando _docker compose build_ en la carpeta principal del proyecto para crear las imagenes necesarias para cada uno de los contenedores que levantara el docker compose
+
 Usar el comando _docker compose up -d_ en la carpeta principal del proyecto para levantar todos los contenedores ya relacionados entre ellos.
 
 El backend se encontrara en el puerto 5000 y el frontend en el puerto 3000.
