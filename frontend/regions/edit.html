@@ -72,7 +72,7 @@
 
 
             <div class="flex justify-between mt-6">
-                <a href="./regions.html" class="text-gray-300 hover:text-white underline font-cinzel">&lt; Volver</a>
+                <a id="btn_volver" class="text-gray-300 hover:text-white underline font-cinzel">&lt; Volver</a>
                 <button type="submit"
                     class="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded font-semibold font-cinzel shadow">
                     Guardar
@@ -111,6 +111,7 @@
 
             if (regionId) {
                 populate(regionId);
+                document.getElementById("btn_volver").href=`viewRegion.html?id=${regionId}`;
             } else {
                 console.logs("Region no encontrada o dada");
                 window.location.href = 'regions.html';
