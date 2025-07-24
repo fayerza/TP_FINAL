@@ -17,7 +17,7 @@ async function getOneMonster(req, res) {
         m.monster_id,m.name ,m.img, m.description, m.wtr_res , m.fr_res, m.ice_res , m.drg_res ,m.elc_res ,m.type ,
         m.og_game ,m.difficulty ,
         r.region_id AS "region_id", r.name AS "region_name", r.img AS "region_img", 
-        ma.Atk_id , ma.name AS "attack_name" , ma.dmg , ma.atk_element, ma.type 
+        ma.Atk_id , ma.name AS "attack_name" , ma.dmg , ma.atk_element, ma.type  AS "atk_type"
         FROM monsters m LEFT OUTER JOIN monsters_regions mr ON m.monster_id = mr.monster_id 
         LEFT OUTER JOIN regions r  ON mr.region_id = r.region_id 
         LEFT OUTER JOIN monster_atks ma ON ma.monster_id = m.monster_id 
@@ -65,7 +65,7 @@ async function getOneMonster(req, res) {
                     name: r.attack_name,
                     dmg: r.dmg,
                     element: r.atk_element,
-                    type: r.type
+                    type: r.atk_type
                 });
                 attackSet.add(r.atk_id);
             }
