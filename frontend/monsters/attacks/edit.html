@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Editar Ataque</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+
+    .font-lora {
+      font-family: 'Lora', serif;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen px-[7%] flex items-center bg-gray-800 text-gray-200 font-lora bg-cover bg-center"
+  style="background-image: url('../../assets/background.jpg');">
+  <div
+    class="text-center px-10 w-full h-screen flex flex-col justify-center items-center bg-gray-950/50 overflow-y-auto py-10">
+
+    <form id="attackForm" class="flex flex-col gap-4 w-full max-w-md bg-gray-600 p-6 rounded shadow-md text-left">
+      <h2 class="text-2xl font-bold font-cinzel text-gray-100 mb-2">Editar Ataque</h2>
+
+      <div class="flex flex-col gap-4">
+        <div>
+          <label for="name" class="block font-cinzel">Nombre</label>
+          <input type="text" id="name" name="name" class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+
+        <div>
+          <label for="atk_element" class="block font-cinzel">Elemento</label>
+          <select id="atk_element" name="atk_element" class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1">
+            <option value="" disabled selected>Seleccione...</option>
+            <option value="Ice">Hielo</option>
+            <option value="Fire">Fuego</option>
+            <option value="Electric">Eléctrico</option>
+            <option value="Dragon">Dragón</option>
+            <option value="Water">Agua</option>
+            <option value="None">Ninguno</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="dmg" class="block font-cinzel">Daño</label>
+          <input type="number" id="dmg" name="dmg" class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-6">
+        <a href="./index.html" class="text-gray-300 hover:text-white underline font-cinzel">&lt; Volver</a>
+        <button type="submit"
+          class="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded font-semibold font-cinzel shadow">
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+
+    <script type="module">
+      import { getOneMonsterAttack, updateMonsterAttack } from '../../api.js';
+
+      const monsterId = new URLSearchParams(window.location.search).get('id');
+      const attackId = new URLSearchParams(window.location.search).get('attackId');
+
+      console.log(`Monster ID: ${monsterId}, Attack ID: ${attackId}`);
+
+      async function populateForm(attackId) {
+        try {
+          const attack = await getOneMonsterAttack(monsterId, attackId);
+          if (attack) {
+            document.getElementById('name').value = attack.name || '';
+            document.getElementById('atk_element').value = attack.atk_element || '';
+            document.getElementById('dmg').value = attack.dmg || '';
+
+            console.log(`Attack Data: ${JSON.stringify(attack)}`);
+
+            document.getElementById('name').placeholder = attack.attack_name || 'Nombre del ataque';
+            document.getElementById('dmg').placeholder = attack.dmg ? attack.dmg.toString() : '0';
+          } else {
+            alert('Ataque no encontrado.');
+            window.location.href = `../viewMonster.html?id=${monsterId}`;
+          }
+        } catch (error) {
+          alert('Error al cargar los datos del ataque. Ver consola.');
+          console.error(error);
+          window.location.href = `../viewMonster.html?id=${monsterId}`;
+        }
+      }
+
+      if (attackId && monsterId) {
+        populateForm(attackId);
+      } else {
+        alert('ID de ataque o de monstruo no proporcionado.');
+        window.location.href = `../viewMonster.html?id=${id}`;
+      }
+
+      document.getElementById('attackForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const attack = {
+          name: document.getElementById('name').value,
+          atk_element: document.getElementById('atk_element').value,
+          dmg: Number(document.getElementById('dmg').value),
+        };
+
+        try {
+          await updateMonsterAttack(monsterId, attackId, JSON.stringify(attack));
+          alert('Ataque actualizado exitosamente.');
+          window.location.href = `../viewMonster.html?id=${monsterId}`;
+        } catch (error) {
+          alert('Hubo un error al actualizar el ataque. Ver consola.');
+          console.error(error);
+        }
+      });
+    </script>
+
+  </div>
+</body>
+
+</html>
