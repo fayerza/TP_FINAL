@@ -1,4 +1,4 @@
-const BACKEND_URL = 'http://localhost:5000/api/v1';
+const BACKEND_URL = 'https://backend.idds.saujan.com.ar/api/v1';
 
 export async function getMonsters() {
   try {
