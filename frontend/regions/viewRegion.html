@@ -27,27 +27,26 @@
 
         <button type="button"
             class="col-span-4 md:col-span-1 mt-4 bg-blue-700 hover:bg-blue-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow"
-            id="btn_exit"> <- Exit </button>
+            id="btn_exit"> <- Volver </button>
                 <button type="button"
                     class="col-span-4 md:col-span-1 mt-4 bg-blue-700 hover:bg-blue-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow"
                     id="btn_edit">Editar</button>
 
-                        <div
-                            class="col-span-4 md:col-span-2 text-center md:text-right underline text-4xl">
-                            <h1 id="region_name"></h1>
-                        </div>
+                <div class="col-span-4 w-full flex flex-col justify-center">
 
-                        <div class="col-span-4">
-                            <img id="region_img" class=" w-full" src="" alt="">
-                        </div>
+                    <div class="col-span-4 md:col-span-2 text-left mb-10 underline text-4xl">
+                        <h1 id="region_name"></h1>
+                    </div>
+                    <img id="region_img" class="w-full max-w-96" src="" alt="">
+                </div>
 
-                        <div class="col-span-4">
-                            <h2 class="text-xl underline underline-offset-8 md:text-3xl" id="region_weather"></h2>
-                            <p class="text-xl" id="region_desc"></p>
+                <div class="col-span-4">
+                    <h2 class="text-xl underline underline-offset-8 md:text-3xl mb-10" id="region_weather"></h2>
+                    <p class="text-xl" id="region_desc"></p>
 
-                        </div>
-                        <h1 class="md:col-span-2 text-xl col-span-4 text-center" id="region_areas"></h1>
-                        <h1 class="md:col-span-2 text-xl col-span-4 text-center" id="region_game"></h1>
+                </div>
+                <h1 class="md:col-span-2 text-xl col-span-4 text-center" id="region_areas"></h1>
+                <h1 class="md:col-span-2 text-xl col-span-4 text-center" id="region_game"></h1>
 
     </div>
 
@@ -62,8 +61,8 @@
             document.location.href = 'regions.html';
         }
 
-        function toEdit(){
-            document.location.href = 'edit.html?id='+id;
+        function toEdit() {
+            document.location.href = 'edit.html?id=' + id;
         }
 
         function moveMonster() {
@@ -81,10 +80,10 @@
 
             document.getElementById("region_name").innerHTML = res.id + ". " + res.name;
             document.getElementById("region_img").src = res.img;
-            document.getElementById("region_weather").innerHTML = "Weather: " + res.weather;
+            document.getElementById("region_weather").innerHTML = "Clima: " + res.weather;
             document.getElementById("region_desc").innerHTML = res.description;
-            document.getElementById("region_areas").innerHTML = "Number or Areas: " + res.areas;
-            document.getElementById("region_game").innerHTML = "First Game Appearence: " + res.game;
+            document.getElementById("region_areas").innerHTML = "Cantidad de Areas: " + res.areas;
+            document.getElementById("region_game").innerHTML = "Primer aparición en juego: " + res.game;
 
             res.monsters.forEach(mon => {
                 const monster = document.createElement("div");
@@ -96,7 +95,7 @@
 
                 const linkMonster = document.createElement("a");
                 linkMonster.innerHTML = mon.id + ". " + mon.name;
-                linkMonster.href = "../monsters/viewMonster.html?id="+mon.id;
+                linkMonster.href = "../monsters/viewMonster.html?id=" + mon.id;
                 linkMonster.classList.add("underline", "hover:text-blue-500", "text-xl");
 
                 monsterIds.push(mon.id);
@@ -111,7 +110,7 @@
                 "bg-green-700", "hover:bg-green-800", "text-gray-100", "px-4", "py-2", "rounded", "font-cinzel", "shadow"
             );
             create_delete_link.addEventListener("click", moveMonster);
-            create_delete_link.innerHTML = "Add or remover monsters from the region";
+            create_delete_link.innerHTML = "Editar monstruos de la región";
             document.getElementById("main").appendChild(create_delete_link);
         });
 
