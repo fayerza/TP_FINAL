@@ -120,6 +120,17 @@
 
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
+
+        const regionIds = [];
+
+        function moveRegion() {
+            let string = "";
+            regionIds.forEach(id => {
+                string += "&region_Ids=" + id;
+            });
+            document.location.href = '../monster_regions/add_removeRelationship.html?idMonster=' + id + string;
+        }
+
         getOneMonster(id).then(result => {
             const editButton = document.getElementById("editMonsterButton");
             editButton.href = `./edit.html?id=${id}`;
@@ -226,12 +237,21 @@
                 const linkRegion = document.createElement("a");
                 linkRegion.classList.add("hover:text-blue-700", "text-blue-200", "items-center");
                 linkRegion.innerHTML = r.id + ". " + r.name;
-                linkRegion.href = "#";
+                linkRegion.href = "../regions/viewRegion.html?id=" + r.id;
+
+                regionIds.push(r.id);
 
                 region.appendChild(img);
                 region.appendChild(linkRegion);
                 document.getElementById("main").appendChild(region);
-            })
+            });
+            const create_delete_link = document.createElement("button");
+            create_delete_link.classList.add("col-span-4", "mx-auto", "w-auto", "underline",
+                "bg-green-700", "hover:bg-green-800", "text-gray-100", "px-4", "py-2", "rounded", "font-cinzel", "shadow"
+            );
+            create_delete_link.addEventListener("click", moveRegion);
+            create_delete_link.innerHTML = "Add or remove regions where the monster is from";
+            document.getElementById("main").appendChild(create_delete_link);
         });
     </script>
 </body>

@@ -96,7 +96,7 @@
 
                 const linkMonster = document.createElement("a");
                 linkMonster.innerHTML = mon.id + ". " + mon.name;
-                linkMonster.href = "#";
+                linkMonster.href = "../monsters/viewMonster.html?id="+mon.id;
                 linkMonster.classList.add("underline", "hover:text-blue-500", "text-xl");
 
                 monsterIds.push(mon.id);

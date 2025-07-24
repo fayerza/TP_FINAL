@@ -38,14 +38,19 @@
 
     <script type="module">
         //should also import getRegions or somthing like that
-        import { getMonsters, deleteRelationship, createRelationship } from '../api.js';
+        import { getMonsters,getRegions, deleteRelationship, createRelationship } from '../api.js';
         const params = new URLSearchParams(window.location.search);
         const idRegion = params.get("idRegion");
         const idMonster = params.get("idMonster");
         const monsters_Ids = params.getAll("monsters_Ids");
+        const region_Ids = params.getAll("region_Ids");
 
         function exitToRegion() {
             document.location.href = '../regions/viewRegion?id=' + idRegion;
+        }
+
+        function exitToMonster(){
+            document.location.href = '../monsters/viewMonster.html?id=' + idMonster;
         }
 
         if (idRegion !== null && idMonster === null) {
@@ -87,6 +92,39 @@
 
         if (idMonster !== null && idRegion === null) {
             console.log("Working with MOSNTERS");
+
+            getRegions().then(regions => {
+                regions.forEach(r => {
+
+                    const inputRegion = document.createElement("input");
+                    inputRegion.classList.add("mx-3", "accent-purple-500");
+                    inputRegion.type = "checkbox";
+                    inputRegion.value = r.region_id;
+                    if (region_Ids.includes("" + r.region_id)) {
+                        inputRegion.checked = true;
+                    }
+
+                    inputRegion.addEventListener('change', async function () {
+                        try {
+                            if (this.checked) {
+                                await createRelationship(this.value, idMonster);
+                            } else {
+                                await deleteRelationship(this.value, idMonster);
+                            }
+                        } catch (error) {
+                            console.error(error);
+                            this.checked = !this.checked;
+                        }
+                    })
+
+                    const labelRegion = document.createElement("label");
+                    labelRegion.appendChild(inputRegion);
+                    labelRegion.append(r.region_id + ". " + r.name);
+
+                    document.getElementById("monster_checkBox").appendChild(labelRegion);
+                });
+            });
+            document.getElementById("btn_save").addEventListener("click", exitToMonster);
         }
     </script>
 </body>
