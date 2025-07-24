@@ -23,15 +23,24 @@
     style="background-image: url('../assets/background.jpg');">
 
     <div id="main"
-        class="min-h-screen h-full grid grid-cols-4 gap-4 px-10 w-full flex-col justify-center items-stretch bg-black/85 pb-10">
+        class="min-h-screen h-full grid grid-cols-4 gap-4 px-10 w-full flex-col justify-center items-stretch bg-black/85 py-10">
 
+        <div class="flex w-full justify-start">
+            <a href="./index.html" class="text-gray-300 hover:text-white underline font-cinzel">&lt; Volver</a>
+        </div>
         <div class="col-span-4 pt-4">
             <div class="flex w-full justify-between">
                 <h1 class="text-5xl font-bold font-cinzel text-gray-100 mb-2 underline" id="monster_name"></h1>
-                <a id="editMonsterButton" href="#"
-                    class="bg-blue-700 hover:bg-blue-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow flex h-max">
-                    Editar
-                </a>
+                <div class="flex space-x-4">
+                    <a id="deleteMonsterButton" href="#"
+                        class="bg-red-700 hover:bg-red-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow flex h-max">
+                        ELiminar
+                    </a>
+                    <a id="editMonsterButton" href="#"
+                        class="bg-blue-700 hover:bg-blue-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow flex h-max">
+                        Editar
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -82,7 +91,8 @@
         <div class="col-span-4">
             <div class="flex w-full justify-between">
                 <h1 class="text-left text-4xl underline">Ataques</h1>
-                <a href="#" id="create-monster-attack" class="bg-green-700 hover:bg-green-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow">
+                <a href="#" id="create-monster-attack"
+                    class="bg-green-700 hover:bg-green-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow">
                     Crear Ataque
                 </a>
             </div>
@@ -106,7 +116,7 @@
     </div>
 
     <script type="module">
-        import { getOneMonster, deleteMonsterAttack } from '../api.js';
+        import { getOneMonster, deleteMonsterAttack, deleteMonster } from '../api.js';
 
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
@@ -114,7 +124,16 @@
             const editButton = document.getElementById("editMonsterButton");
             editButton.href = `./edit.html?id=${id}`;
 
-            console.log("Monster data:", result);
+            const deleteButton = document.getElementById("deleteMonsterButton");
+            deleteButton.addEventListener("click", async () => {
+                try {
+                    await deleteMonster(result.id);
+                    window.location.href = "./index.html";
+                } catch (error) {
+                    console.error("Error deleting monster:", error);
+                    alert("Failed to delete the monster. Check the console for details.");
+                }
+            });
 
             const createMonsterAttack = document.getElementById("create-monster-attack");
             createMonsterAttack.href = `./attacks/create.html?id=${id}`;
@@ -124,9 +143,9 @@
 
             document.getElementById("monster_img").src = result.img;
             document.getElementById("monster_desc").innerHTML = result.description;
-            document.getElementById("monster_type").innerHTML = `Category: ${result.type}`;
+            document.getElementById("monster_type").innerHTML = `Categoría: ${result.type}`;
             document.getElementById("monster_game").innerHTML = result.og_game;
-            document.getElementById("monster_difficulty").innerHTML = "Difficulty: " + result.difficulty + " ★";
+            document.getElementById("monster_difficulty").innerHTML = "Dificultad: " + result.difficulty + " ★";
             document.getElementById("wtr_res").innerHTML = result.wtr_res;
             document.getElementById("fire_res").innerHTML = result.fr_res;
             document.getElementById("ice_res").innerHTML = result.ice_res;
