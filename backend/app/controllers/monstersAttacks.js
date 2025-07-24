@@ -4,7 +4,7 @@ async function getMonsterAttacks(req, res) {
   try {
     const monsterId = req.params.id;
     const attacks = await db.query(`
-            SELECT ma.Atk_id, ma.name AS attack_name, ma.dmg, ma.atk_element
+            SELECT ma.Atk_id, ma.name AS attack_name, ma.dmg, ma.atk_element, ma.type
             FROM monster_atks ma
             WHERE ma.monster_id = $1`, [monsterId]);
 
@@ -23,7 +23,7 @@ async function getOneAttack(req, res) {
   try {
     const { id, attackId } = req.params;
     const attack = await db.query(`
-            SELECT ma.Atk_id, ma.name AS attack_name, ma.dmg, ma.atk_element
+            SELECT ma.Atk_id, ma.name AS attack_name, ma.dmg, ma.atk_element, ma.type
             FROM monster_atks ma
             WHERE ma.monster_id = $1 AND ma.atk_id = $2`, [id, attackId]);
 
@@ -41,16 +41,16 @@ async function getOneAttack(req, res) {
 async function postMonsterAttack(req, res) {
   try {
     const monsterId = req.params.id;
-    const { atk_element, dmg, name } = req.body;
+    const { atk_element, dmg, name, type } = req.body;
 
-    if (!atk_element || !dmg || !name) {
+    if (!atk_element || !dmg || !name || !type) {
       return res.status(400).send("All fields are required");
     }
 
     const newAttack = await db.query(`
-            INSERT INTO monster_atks (atk_element, dmg, name, monster_id)
-            VALUES ($1, $2, $3, $4)
-            RETURNING *`, [atk_element, dmg, name, monsterId]);
+            INSERT INTO monster_atks (atk_element, dmg, name, monster_id, type)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *`, [atk_element, dmg, name, monsterId, type]);
 
     return res.status(201).json(newAttack.rows[0]);
   } catch (error) {
@@ -62,9 +62,7 @@ async function postMonsterAttack(req, res) {
 async function updateMonsterAttack(req, res) {
   try {
     const { id, attackId } = req.params;
-    const { atk_element, dmg, name } = req.body;
-
-    console.log("REQUEST", req)
+    const { atk_element, dmg, name, type } = req.body;
 
     if (!atk_element || !dmg || !name) {
       return res.status(400).send("All fields are required");
@@ -72,9 +70,10 @@ async function updateMonsterAttack(req, res) {
 
     const updatedAttack = await db.query(`
             UPDATE monster_atks
-            SET atk_element = $1, dmg = $2, name = $3
-            WHERE atk_id = $4 AND monster_id = $5
-            RETURNING *`, [atk_element, dmg, name, attackId, id]);
+            SET atk_element = $1, dmg = $2, name = $3, type = $4
+            WHERE atk_id = $5 AND monster_id = $6
+            RETURNING *`, [atk_element, dmg, name, type, attackId, id]
+    );
 
     if (updatedAttack.rows.length === 0) {
       return res.status(404).send("Attack not found");

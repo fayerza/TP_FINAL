@@ -210,8 +210,6 @@ export async function createMonsterAttack(id, attack) {
     if (!id || !attack) {
       throw new Error('Monster ID and Attack data are required');
     }
-
-    console.log(" createMonsterAttack called with id:", id, "attack:", attack);
     const res = await fetch(`${BACKEND_URL}/monsters/${id}/attacks`, {
       method: 'POST',
       headers: {
@@ -235,7 +233,6 @@ export async function updateMonsterAttack(id, attackId, attack) {
     if (!id || !attackId || !attack) {
       throw new Error('Monster ID, Attack ID, and Attack data are required');
     }
-    console.log(" updateMonsterAttack called with id:", id, "attackId:", attackId, "attack:", attack);
     const res = await fetch(`${BACKEND_URL}/monsters/${id}/attacks/${attackId}`, {
       method: 'PUT',
       headers: {
