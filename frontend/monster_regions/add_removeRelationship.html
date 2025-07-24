@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>View Region</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+
+        .font-lora {
+            font-family: 'Lora', serif;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen px-[7%] flex items-center text-gray-200 font-lora bg-cover bg-center"
+    style="background-image: url('../assets/background.jpg');">
+
+    <div class="justify-between text-center px-10 w-full min-h-screen h-max  flex flex-col items-center bg-gray-950/50">
+        <div id="monster_checkBox" class="mt-5 flex flex-col justify-between bg-gray-950/75 text-white text-lg p-4">
+        </div>
+
+        <div>
+            <button id="btn_save"
+                class="mb-5 content-end col-span-4 bg-green-700 hover:bg-green-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow">
+                Exit
+            </button>
+        </div>
+
+
+    </div>
+
+    <script type="module">
+        //should also import getRegions or somthing like that
+        import { getMonsters,getRegions, deleteRelationship, createRelationship } from '../api.js';
+        const params = new URLSearchParams(window.location.search);
+        const idRegion = params.get("idRegion");
+        const idMonster = params.get("idMonster");
+        const monsters_Ids = params.getAll("monsters_Ids");
+        const region_Ids = params.getAll("region_Ids");
+
+        function exitToRegion() {
+            document.location.href = '../regions/viewRegion?id=' + idRegion;
+        }
+
+        function exitToMonster(){
+            document.location.href = '../monsters/viewMonster.html?id=' + idMonster;
+        }
+
+        if (idRegion !== null && idMonster === null) {
+            console.log("Working with REGIONS: " + monsters_Ids);
+
+            getMonsters().then(monsters => {
+                monsters.forEach(mon => {
+
+                    const inputMonster = document.createElement("input");
+                    inputMonster.classList.add("mx-3", "accent-purple-500");
+                    inputMonster.type = "checkbox";
+                    inputMonster.value = mon.monster_id;
+                    if (monsters_Ids.includes("" + mon.monster_id)) {
+                        inputMonster.checked = true;
+                    }
+
+                    inputMonster.addEventListener('change', async function () {
+                        try {
+                            if (this.checked) {
+                                await createRelationship(idRegion, this.value);
+                            } else {
+                                await deleteRelationship(idRegion, this.value);
+                            }
+                        } catch (error) {
+                            console.error(error);
+                            this.checked = !this.checked;
+                        }
+                    })
+
+                    const labelMonster = document.createElement("label");
+                    labelMonster.appendChild(inputMonster);
+                    labelMonster.append(mon.monster_id + ". " + mon.name);
+
+                    document.getElementById("monster_checkBox").appendChild(labelMonster);
+                });
+            });
+            document.getElementById("btn_save").addEventListener("click", exitToRegion);
+        }
+
+        if (idMonster !== null && idRegion === null) {
+            console.log("Working with MOSNTERS");
+
+            getRegions().then(regions => {
+                regions.forEach(r => {
+
+                    const inputRegion = document.createElement("input");
+                    inputRegion.classList.add("mx-3", "accent-purple-500");
+                    inputRegion.type = "checkbox";
+                    inputRegion.value = r.region_id;
+                    if (region_Ids.includes("" + r.region_id)) {
+                        inputRegion.checked = true;
+                    }
+
+                    inputRegion.addEventListener('change', async function () {
+                        try {
+                            if (this.checked) {
+                                await createRelationship(this.value, idMonster);
+                            } else {
+                                await deleteRelationship(this.value, idMonster);
+                            }
+                        } catch (error) {
+                            console.error(error);
+                            this.checked = !this.checked;
+                        }
+                    })
+
+                    const labelRegion = document.createElement("label");
+                    labelRegion.appendChild(inputRegion);
+                    labelRegion.append(r.region_id + ". " + r.name);
+
+                    document.getElementById("monster_checkBox").appendChild(labelRegion);
+                });
+            });
+            document.getElementById("btn_save").addEventListener("click", exitToMonster);
+        }
+    </script>
+</body>
+
+</html>

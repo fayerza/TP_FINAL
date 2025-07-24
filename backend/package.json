@@ -1,0 +1,25 @@
+{
+  "name": "tp_final",
+  "version": "1.0.0",
+  "description": "Trabajo final Introducción al desarrollo de software",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fayerza/TP_FINAL.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fayerza/TP_FINAL/issues"
+  },
+  "homepage": "https://github.com/fayerza/TP_FINAL#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.2"
+  }
+}

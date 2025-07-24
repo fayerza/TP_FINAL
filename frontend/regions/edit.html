@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Editar Regiones</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+
+        .font-lora {
+            font-family: 'Lora', serif;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen px-[7%] flex items-center bg-gray-800 text-gray-200 font-lora bg-cover bg-center"
+    style="background-image: url('../assets/background.jpg');">
+    <div
+        class="text-center px-10 w-full h-screen flex flex-col justify-center items-center bg-gray-950/50 overflow-y-auto py-10">
+        <form id="regionForm"
+            class="flex flex-col mt-52 gap-4 w-full max-w-2xl bg-gray-600 p-6 rounded shadow-md text-left">
+            <h2 class="text-2xl font-bold font-cinzel text-gray-100 mb-2">Editar Region</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <div>
+                    <label for="name">Nombre</label>
+                    <input type="text" id="name" name="name" required
+                        class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+                </div>
+
+                <div>
+                    <label for="weather">Clima de la Region</label>
+                    <select id="weather" name="weather" required
+                        class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1">
+                        <option value="" disabled selected>Seleccione...</option>
+                        <option value="Mild">Mild</option>
+                        <option value="Cold">Cold</option>
+                        <option value="Hot">Hot</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-2 col-span-1">
+                    <label for="img" class="block font-cinzel">Imagen (URL)</label>
+                    <input type="text" id="img" name="img" class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+                </div>
+
+                <div class="md:col-span-2 col-span-1">
+                    <label for="desc" class="block font-cinzel">Descripcion</label>
+                    <textarea id="desc" name="desc" rows="3" required
+                        class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1"></textarea>
+                </div>
+
+                <div>
+                    <label for="areas">Numero de areas</label>
+                    <input type="number" id="areas" name="areas" required
+                        class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+                </div>
+
+                <div>
+                    <label for="game">Juego de Origen</label>
+                    <input type="text" id="game" name="game" required
+                        class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+                </div>
+
+            </div>
+
+
+            <div class="flex justify-between mt-6">
+                <a id="btn_volver" class="text-gray-300 hover:text-white underline font-cinzel">&lt; Volver</a>
+                <button type="submit"
+                    class="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded font-semibold font-cinzel shadow">
+                    Guardar
+                </button>
+            </div>
+        </form>
+
+        <script type="module">
+            import { updateRegion, getOneRegion } from '../api.js';
+            const regionId = new URLSearchParams(window.location.search).get('id');
+
+            async function populate(id) {
+                try {
+                    const region = await getOneRegion(regionId);
+                    if (region) {
+                        document.getElementById('name').value = region.name || '';
+                        document.getElementById('name').placeholder = region.name || 'Nombre de la region';
+                        document.getElementById('weather').value = region.weather || '';
+                        document.getElementById('weather').placeholder = region.weather || 'Seleccione clima';
+                        document.getElementById('img').value = region.img || '';
+                        document.getElementById('img').placeholder = region.img || 'Imagen';
+                        document.getElementById('areas').value = region.areas || '';
+                        document.getElementById('areas').placeholder = region.areas || 'Areas';
+                        document.getElementById('game').value = region.game || '';
+                        document.getElementById('game').placeholder = region.game || 'Juego de origen';
+                        document.getElementById('desc').value = region.description || '';
+                        document.getElementById('desc').placeholder = 'Descripcion';
+                    } else {
+                        alert('Region no fue encontrada.');
+                        window.location.href = 'regions.html';
+                    }
+                } catch (error) {
+                    console.error("Error: ", error);
+                }
+            }
+
+            if (regionId) {
+                populate(regionId);
+                document.getElementById("btn_volver").href=`viewRegion.html?id=${regionId}`;
+            } else {
+                console.logs("Region no encontrada o dada");
+                window.location.href = 'regions.html';
+            }
+
+            document.getElementById('regionForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const region = {
+                    name: document.getElementById('name').value,
+                    img: document.getElementById('img').value,
+                    weather: document.getElementById('weather').value,
+                    description: document.getElementById('desc').value,
+                    num_areas: parseInt(document.getElementById('areas').value),
+                    og_game: document.getElementById('game').value
+                };
+
+                try {
+                    await updateRegion(regionId, JSON.stringify(region));
+                    alert('Region actualizada exitosamente.');
+                    window.location.href = `viewRegion.html?id=${regionId}`;
+                } catch (error) {
+                    alert('Hubo un error al actualziar la region. Ver consola.');
+                    console.error(error);
+                }
+            });
+
+        </script>
+    </div>
+</body>
+
+</html>

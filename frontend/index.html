@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monster Hunter Compendium</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    .font-cinzel {
+      font-family: 'Cinzel', serif;
+    }
+
+    .font-lora {
+      font-family: 'Lora', serif;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen px-[7%] flex items-center bg-gray-800 text-gray-200 font-lora bg-cover bg-center" style="background-image: url('./assets/background.jpg');">
+  <div class="text-center px-10 min-w-96 w-[25%] h-screen flex flex-col justify-center items-center bg-gray-950/50">
+    <img src="https://www.monsterhunter.com/world/images/top/title.png" alt="Monster Hunter"
+      class="w-80 mx-auto mb-4 drop-shadow-lg" />
+
+    <h1 class="text-3xl mb-4 font-bold font-cinzel text-gray-300">
+      Bienvenido
+    </h1>
+
+    <p class="mb-8 w-full text-base text-gray-300">
+      Consulta, crea y edita registros de monstruos, sus ataques y las regiones del juego.
+    </p>
+
+    <div class="w-max flex flex-col space-y-4">
+      <a href="./monsters/index.html"
+        class="py-3 px-7 font-semibold text-gray-300 font-cinzel text-lg border-b-2 border-transparent bg-gray-300/10 hover:border-gray-300">
+        Monstruos
+      </a>
+
+      <a href="./regions/regions.html"
+        class="py-3 px-7 font-semibold text-gray-300 font-cinzel text-lg border-b-2 border-transparent bg-gray-300/10 hover:border-gray-300">
+        Regiones
+      </a>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
