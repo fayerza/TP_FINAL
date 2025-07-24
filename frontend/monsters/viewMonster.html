@@ -40,7 +40,6 @@
             <div>
                 <h1 id="monster_type" class="text-3xl"></h1>
                 <p id="monster_desc" class="pt-2"></p>
-
             </div>
             <div>
                 <div class="w-full flex justify-left">
@@ -81,15 +80,19 @@
         <img class="col-span-4 md:col-span-2 mx-auto" id="monster_img" alt="">
 
         <div class="col-span-4">
-            <h1 class="text-left text-4xl underline">Ataques</h1>
-            <h1 class="pt-6 pb-6" id="zero_Attacks">This monster does not have any attacks</h1>
+            <div class="flex w-full justify-between">
+                <h1 class="text-left text-4xl underline">Ataques</h1>
+                <a href="#" id="create-monster-attack" class="bg-green-700 hover:bg-green-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow">
+                    Crear Ataque
+                </a>
+            </div>
+            <h1 class="pt-6 pb-6" id="zero_Attacks">No hay ataques.</h1>
             <table id="atk_table" class="mt-4 mb-4 min-w-full hidden">
                 <thead class="bg-gray-00 border-b-2 border-gray-200">
                     <tr>
-                        <th class="px-4 py-2 text-center font-extrabold">Attack Id</th>
-                        <th class="px-4 py-2 text-center font-extrabold">Name</th>
-                        <th class="px-4 py-2 text-center font-extrabold">Dmg</th>
-                        <th class="px-4 py-2 text-center font-extrabold">Element</th>
+                        <th class="px-4 py-2 text-center font-extrabold">Nombre</th>
+                        <th class="px-4 py-2 text-center font-extrabold">Daño</th>
+                        <th class="px-4 py-2 text-center font-extrabold">Elemento</th>
                         <th class="px-4 py-2 text-center font-extrabold"></th>
                         <th class="px-4 py-2 text-center font-extrabold"></th>
                     </tr>
@@ -97,21 +100,21 @@
                 <tbody id="atks_table_body" class="px-4 py-2 text-center w-max">
                 </tbody>
             </table>
-            <a href="#" class="bg-green-700 hover:bg-green-800 text-gray-100 px-4 py-2 rounded font-cinzel shadow">
-                Crear Ataque
-            </a>
         </div>
-        <h1 class="text-4xl underline col-span-4">Regions</h1>
+        <h1 class="text-4xl underline col-span-4">Regiones</h1>
     </div>
 
     <script type="module">
-        import { getOneMonster } from '../api.js';
+        import { getOneMonster, deleteMonsterAttack } from '../api.js';
+
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
-        console.log(id);
         getOneMonster(id).then(result => {
             const editButton = document.getElementById("editMonsterButton");
             editButton.href = `./edit.html?id=${id}`;
+
+            const createMonsterAttack = document.getElementById("create-monster-attack");
+            createMonsterAttack.href = `./attacks/create.html?id=${id}`;
 
             const title = document.getElementById("monster_name");
             title.innerHTML = result.id + ". " + result.name;
@@ -133,11 +136,6 @@
                 document.getElementById("atk_table").classList.remove("hidden");
 
                 const row = document.createElement("tr");
-
-                const id = document.createElement("td");
-                id.classList.add("px-4", "py-2", "w-max");
-                id.innerHTML = a.id;
-                row.appendChild(id);
 
                 const name = document.createElement("td");
                 name.classList.add("px-4", "py-2", "w-max");
@@ -162,11 +160,26 @@
                 deleteAttack.append(linkAtk);
                 row.appendChild(deleteAttack);
 
+                linkAtk.addEventListener("click", async () => {
+                    try {
+                        await deleteMonsterAttack(result.id, a.id);
+                        row.remove();
+
+                        if (table.children.length === 0) {
+                            document.getElementById("atk_table").classList.add("hidden");
+                            document.getElementById("zero_Attacks").classList.remove("hidden");
+                        }
+                    } catch (error) {
+                        console.error("Error deleting attack:", error);
+                        alert("Failed to delete the attack. Check the console for details.");
+                    }
+                });
+
                 const modAtk = document.createElement("td");
                 const linkMod = document.createElement("a");
-                linkMod.href = "#";
+                linkMod.href = `./attacks/edit.html?id=${id}&attackId=${a.id}`;
                 linkMod.classList.add("text-blue-200", "hover:text-blue-500", "underline", "px-4", "py-2", "w-max");
-                linkMod.innerHTML = "Modificar";
+                linkMod.innerHTML = "Editar";
                 modAtk.appendChild(linkMod);
                 row.appendChild(modAtk);
 
@@ -176,7 +189,7 @@
             });
             result.regions.forEach(r => {
                 const region = document.createElement("div");
-                region.classList.add("md:col-span-1", "sm:col-span-2","flex","flex-col","text-center");
+                region.classList.add("md:col-span-1", "sm:col-span-2", "flex", "flex-col", "text-center");
 
                 const img = document.createElement("img");
                 img.classList.add("max-h-80", "max-w-100",);
@@ -184,7 +197,7 @@
                 img.alt = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDL9wCVeINK4HcXlbi_oOa-K8WtX9IW1Whow&s";
 
                 const linkRegion = document.createElement("a");
-                linkRegion.classList.add("hover:text-blue-700","text-blue-200","items-center");
+                linkRegion.classList.add("hover:text-blue-700", "text-blue-200", "items-center");
                 linkRegion.innerHTML = r.id + ". " + r.name;
                 linkRegion.href = "#";
 
