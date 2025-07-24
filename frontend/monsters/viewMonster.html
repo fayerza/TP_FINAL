@@ -91,6 +91,7 @@
                 <thead class="bg-gray-00 border-b-2 border-gray-200">
                     <tr>
                         <th class="px-4 py-2 text-center font-extrabold">Nombre</th>
+                        <th class="px-4 py-2 text-center font-extrabold">Tipo</th>
                         <th class="px-4 py-2 text-center font-extrabold">Daño</th>
                         <th class="px-4 py-2 text-center font-extrabold">Elemento</th>
                         <th class="px-4 py-2 text-center font-extrabold"></th>
@@ -112,6 +113,8 @@
         getOneMonster(id).then(result => {
             const editButton = document.getElementById("editMonsterButton");
             editButton.href = `./edit.html?id=${id}`;
+
+            console.log("Monster data:", result);
 
             const createMonsterAttack = document.getElementById("create-monster-attack");
             createMonsterAttack.href = `./attacks/create.html?id=${id}`;
@@ -141,6 +144,11 @@
                 name.classList.add("px-4", "py-2", "w-max");
                 name.innerHTML = a.name;
                 row.appendChild(name);
+
+                const type = document.createElement("td");
+                type.classList.add("px-4", "py-2", "w-max");
+                type.innerHTML = a.type;
+                row.appendChild(type);
 
                 const dmg = document.createElement("td");
                 dmg.classList.add("px-4", "py-2", "w-max");

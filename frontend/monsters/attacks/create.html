@@ -25,8 +25,17 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label for="name" class="block font-cinzel">Nombre del Ataque</label>
+          <label for="name" class="block font-cinzel">Nombre</label>
           <input type="text" id="name" name="name" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1" />
+        </div>
+
+        <div>
+          <label for="atk_type" class="block font-cinzel">Tipo</label>
+          <select id="atk_type" name="atk_type" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1">
+            <option value="" disabled selected>Seleccione...</option>
+            <option value="Impact">Impacto</option>
+            <option value="Cutting">Corte</option>
+          </select>
         </div>
 
         <div>
@@ -35,7 +44,7 @@
         </div>
 
         <div>
-          <label for="atk_element" class="block font-cinzel">Elemento del Ataque</label>
+          <label for="atk_element" class="block font-cinzel">Elemento</label>
           <select id="atk_element" name="atk_element" required class="w-full p-2 rounded bg-gray-100 text-gray-800 mt-1">
             <option value="" disabled selected>Seleccione...</option>
             <option value="Ice">Hielo</option>
@@ -70,6 +79,7 @@
 
         const attack = {
           name: document.getElementById('name').value,
+          type: document.getElementById('atk_type').value,
           dmg: parseInt(document.getElementById('dmg').value),
           atk_element: document.getElementById('atk_element').value,
         };
